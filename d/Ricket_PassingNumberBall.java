@@ -34,14 +34,16 @@ public class Ricket_PassingNumberBall {
 			throw new RuntimeException(e);
 		}
 		
-		Coord[] coords = new Coord[100];
+		Coord[] coords = new Coord[400];
 		int numCoords = 0;
 		try {
 			String line;
-			while((line = in.readLine()) != null) {
+			while((line = in.readLine().trim()) != null) {
+				if(line.length() == 0) continue;
 				if(line.equals("-999 -999")) break;
 				
 				int s = line.indexOf(' ');
+				if(s == -1) continue;
 				int x = Integer.parseInt(line.substring(0, s));
 				int y = Integer.parseInt(line.substring(s+1));
 				coords[numCoords] = new Coord(x,y);
@@ -49,6 +51,13 @@ public class Ricket_PassingNumberBall {
 			}
 		} catch (Exception e) {
 			throw new RuntimeException(e);
+		}
+		
+		if(numStudents <= 0) {
+			for(int i=0; i<numCoords; i++) {
+				System.out.println("No student at this location");
+			}
+			System.exit(0);
 		}
 		
 		// now we have:
