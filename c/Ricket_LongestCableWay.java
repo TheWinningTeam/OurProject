@@ -6,9 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.Arrays;
 
 public class Ricket_LongestCableWay {
 	public static void main(String[] args) {
@@ -39,8 +37,9 @@ public class Ricket_LongestCableWay {
 		}
 		
 		String line;
-		List<CableInventory> inventory = new ArrayList<CableInventory>();
+		CableInventory[] inventory = new CableInventory[20];
 		
+		int invidx = 0;
 		try {
 			while((line = in.readLine()) != null) {
 				if(line.equals("0 0")) break;
@@ -50,15 +49,16 @@ public class Ricket_LongestCableWay {
 				if(quan > 0) {
 					// optimize by reducing the len so that len*quan < d
 					quan = Math.min(quan, d / len);
-					inventory.add(new CableInventory(len, quan));
+					inventory[invidx] = new CableInventory(len, quan);
+					invidx++;
 				}
 			}
 		} catch (IOException e) {
 		}
 		
-		Collections.sort(inventory); // this sorts inventory descending
+		Arrays.sort(inventory, 0, invidx); // this sorts inventory descending
 
-		int min = minJoints(d, inventory, -1); // recurse!
+		int min = minJoints(d, 0, inventory, -1); // recurse!
 		
 		if(min == Integer.MAX_VALUE) {
 			System.out.println("No solution possible");
@@ -70,7 +70,7 @@ public class Ricket_LongestCableWay {
 		
 	}
 	
-	private static int minJoints(int lengthLeft, List<CableInventory> inventory, int numJointsSoFar) {
+	private static int minJoints(int lengthLeft, int currListIdx, CableInventory[] inventory, int numJointsSoFar) {
 		int min;
 		if(lengthLeft == 0) {
 			min = numJointsSoFar;
@@ -78,14 +78,15 @@ public class Ricket_LongestCableWay {
 			min = Integer.MAX_VALUE;
 		}
 		
-		if(inventory.size() == 0) return min;
+		if(currListIdx >= inventory.length) return min;
 		
-		CableInventory thisInven = inventory.get(0);
-		List<CableInventory> sub = inventory.subList(1, inventory.size());
+		CableInventory thisInven = inventory[currListIdx];
+		if(thisInven == null) return min;
 		
 		for(int i=0; i <= thisInven.num; i++) {
+			if(lengthLeft - i*thisInven.length < 0) break;
 			min = Math.min(min,
-					minJoints(lengthLeft - i*thisInven.length, sub, numJointsSoFar + i)
+					minJoints(lengthLeft - i*thisInven.length, currListIdx+1, inventory, numJointsSoFar + i)
 					);
 		}
 		
