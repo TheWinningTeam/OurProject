@@ -5,7 +5,6 @@ if __name__ == "__main__":
     min_len = int(raw_input())
     occu = int(raw_input())
     leng = int(raw_input())
-    max_occ = (leng - min_len) + 1
     max_len = (leng - occu) + 1
 
     song = []
