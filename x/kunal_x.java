@@ -1,27 +1,34 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Scanner;
 import java.util.TreeSet;
 
 
 public class kunal_x {
 	
 	public kunal_x() {
-		Scanner in = new Scanner(System.in);
+		try {
+		InputStreamReader input = new InputStreamReader(System.in);
+		BufferedReader reader = new BufferedReader(input);
 		
-		long n_words = in.nextLong();
-		HashMap<TreeSet<char[]>, HashSet<String>> dict = new HashMap<TreeSet<char[]>, HashSet<String>>();
-		ArrayList<String> words = new ArrayList<String>();
+		long n_words = Integer.parseInt(reader.readLine());
+		HashMap<TreeSet<Character>, HashSet<String>> dict = new HashMap<TreeSet<Character>, HashSet<String>>();
+
+		String[] line = reader.readLine().split(" ");
 		
-		for(long i=0; i < n_words; i++) {
-			String word = in.next();
+		for(int i=0; i < n_words; i++) {
+			String word = line[i];
 			
-			List<char[]> clist = Arrays.asList(word.toCharArray());
-			TreeSet<char[]> set = new TreeSet<char[]>(clist);
+			TreeSet<Character> set = new TreeSet<Character>();
+			
+			for(char c : word.toCharArray()) {
+				set.add(c);
+			}
+			
 			HashSet<String> bucket = dict.get(set);
 			
 			if(bucket == null) {
@@ -33,14 +40,21 @@ public class kunal_x {
 			}
 		}
 		
-		int n_tests = in.nextInt();
+		int n_tests = Integer.parseInt(reader.readLine());
 		for(int i=0; i < n_tests; i++) {
-			String key = in.next();
+			String key = reader.readLine();
 			
-			List<char[]> clist = Arrays.asList(key.toCharArray());
-			TreeSet<char[]> set = new TreeSet<char[]>(clist);
+			TreeSet<Character> set = new TreeSet<Character>();
+			
+			for(char c : key.toCharArray()) {
+				set.add(c);
+			}
+			
 			HashSet<String> bucket = dict.get(set);
-			
+			if(bucket == null) {
+				System.out.print("NONE ");
+				continue;
+			}
 			ArrayList<String> possible_words = new ArrayList<String>();
 			
 			for(String word : bucket) {
@@ -51,9 +65,14 @@ public class kunal_x {
 			for(String word : possible_words) {
 				System.out.print(word + " ");
 			}
+			
+			if(i != n_tests - 1) {
+				System.out.println();
+			}
 		}
-		
-		
+		} catch (NumberFormatException e) {
+		} catch (IOException e) {
+		}		
 		
 	}
 	
