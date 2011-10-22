@@ -10,20 +10,6 @@ import java.util.Arrays;
 
 public class AlexMayaDiet {
     public static void main(String[] args) {
-        try {
-            if (InetAddress.getLocalHost().getHostName()
-                .equals("nom26779d.nomadic.ncsu.edu")) {
-                try {
-                    System.setIn(new FileInputStream(new File(
-                    "/Users/ricky/Documents/IEEEXtreme/problemC/input.txt")));
-                } catch (FileNotFoundException e1) {
-                    System.out.println("Input file not found");
-                    System.exit(1);
-                }
-            }
-        } catch (UnknownHostException e1) {
-        }
-
         InputStreamReader converter = new InputStreamReader(System.in);
         BufferedReader in = new BufferedReader(converter);
 
