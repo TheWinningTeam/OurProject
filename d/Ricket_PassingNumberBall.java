@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Arrays;
 
 public class Ricket_PassingNumberBall {
 	public static void main(String[] args) {
@@ -58,7 +59,43 @@ public class Ricket_PassingNumberBall {
 		// coords, the list of coords
 		// numStudents, the number of students
 		
+		int maxDim = (int) Math.ceil(Math.sqrt(numStudents));
+		int halfMaxDim = maxDim/2;
+		if(maxDim % 2 == 0) maxDim++; // make it odd
+		int[][] coordToIdx = new int[maxDim][maxDim];
+		coordToIdx[halfMaxDim][halfMaxDim] = 0;
+		for(int idx = 1, x = 0, y = 0, moveCounter = 1, xDir = 1, yDir = 1; ; ) {
+			for(int i=0; i<moveCounter; i++) {
+				x += xDir;
+				if(halfMaxDim+x < coordToIdx.length && halfMaxDim+y < coordToIdx[0].length) {
+					coordToIdx[halfMaxDim+x][halfMaxDim+y] = idx;
+				}
+				idx++;
+			}
+			xDir = -xDir;
+			for(int i=0; i<moveCounter; i++) {
+				y += yDir;
+				if(halfMaxDim+x < coordToIdx.length && halfMaxDim+y < coordToIdx[0].length) {
+					coordToIdx[halfMaxDim+x][halfMaxDim+y] = idx;
+				}
+				idx++;
+			}
+			yDir = -yDir;
+			
+			moveCounter++;
+			
+			if(halfMaxDim+x >= coordToIdx.length || halfMaxDim+y >= coordToIdx[0].length) {
+				break;
+			}
+		}
 		
+		for(int i=0; i<coordToIdx.length; i++) {
+			for(int j=0; j<coordToIdx[i].length; j++) {
+				System.out.print(coordToIdx[i][j]);
+				System.out.print("\t");
+			}
+			System.out.println();
+		}
 	}
 	
 	private static class Coord {
