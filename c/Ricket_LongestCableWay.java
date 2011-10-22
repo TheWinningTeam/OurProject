@@ -56,7 +56,7 @@ public class Ricket_LongestCableWay {
 		} catch (IOException e) {
 		}
 		
-		Arrays.sort(inventory, 0, invidx); // this sorts inventory descending
+		// Arrays.sort(inventory, 0, invidx); // this sorts inventory descending
 
 		int min = minJoints(d, 0, inventory, -1); // recurse!
 		
