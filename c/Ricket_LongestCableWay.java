@@ -56,50 +56,10 @@ public class Ricket_LongestCableWay {
 		} catch (IOException e) {
 		}
 		
-		int D = 0;
-		int min = Integer.MAX_VALUE;
-		
 		Collections.sort(inventory); // this sorts inventory descending
 
-		List<Joint> joints = new ArrayList<Joint>();
-		/*
-		while(true) {
-			CableInventory largestInventory = null;
-			
-			for(CableInventory ci : inventory) {
-				if(D + ci.length > d) {
-					continue;
-				}
-				if(ci.num > 0) {
-					largestInventory = ci;
-					break;
-				}
-			}
-			
-			if(largestInventory == null) {
-				break;
-			}
-			
-			Joint j = new Joint(largestInventory);
-			joints.add(j);
-			D += largestInventory.length;
-			largestInventory.num--;
-			
-			System.out.println(D + ", joints: "+(joints.size()-1));
-			if(D == d) {
-				min = Math.min(min, (joints.size() - 1));
-				Joint removed = joints.remove(0);
-				D -= removed.length;
-				removed.ci.max--;
-			} else if(D < d) {
-				// let it continue
-			} else if(D > d) {
-				joints.remove(j);
-				D -= largestInventory.length;
-				largestInventory.max--;
-			}
-		}
-		*/
+		int min = minJoints(d, inventory, -1); // recurse!
+		
 		if(min == Integer.MAX_VALUE) {
 			System.out.println("No solution possible");
 		} else {
@@ -110,23 +70,33 @@ public class Ricket_LongestCableWay {
 		
 	}
 	
-	private static class Joint {
-		public final CableInventory ci;
-		public final int length;
-		
-		public Joint(CableInventory ci) {
-			this.ci = ci;
-			this.length = ci.length;
+	private static int minJoints(int lengthLeft, List<CableInventory> inventory, int numJointsSoFar) {
+		int min;
+		if(lengthLeft == 0) {
+			min = numJointsSoFar;
+		} else {
+			min = Integer.MAX_VALUE;
 		}
+		
+		if(inventory.size() == 0) return min;
+		
+		CableInventory thisInven = inventory.get(0);
+		List<CableInventory> sub = inventory.subList(1, inventory.size());
+		
+		for(int i=0; i <= thisInven.num; i++) {
+			min = Math.min(min,
+					minJoints(lengthLeft - i*thisInven.length, sub, numJointsSoFar + i)
+					);
+		}
+		
+		return min;
 	}
 	
 	private static class CableInventory implements Comparable<CableInventory> {
 		public final int length;
-		public int max;
-		public int num;
+		public final int num;
 		public CableInventory(int length, int num) {
 			this.length = length;
-			this.max = num;
 			this.num = num;
 		}
 		
