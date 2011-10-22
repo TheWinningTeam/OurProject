@@ -39,9 +39,11 @@ public class Ricket_PassingNumberBall {
 		try {
 			String line;
 			while((line = in.readLine()) != null) {
+				if(line.length() == 0) continue;
 				if(line.equals("-999 -999")) break;
 				
 				int s = line.indexOf(' ');
+				if(s == -1) continue;
 				int x = Integer.parseInt(line.substring(0, s));
 				int y = Integer.parseInt(line.substring(s+1));
 				coords[numCoords] = new Coord(x,y);
