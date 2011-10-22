@@ -24,4 +24,4 @@ if __name__ == "__main__":
         if i.rstrip():
             points.append(float(i))
 
-    print area(points)
+    print area(map(to_cart, points))
